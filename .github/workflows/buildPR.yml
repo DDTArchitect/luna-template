@@ -1,0 +1,14 @@
+name: "Validate PR"
+
+# build.yml is workflow_call-only and releaseMaster.yml only fires on pushes to
+# master, so without this a pull request runs no checks at all — a broken build
+# would only surface after merging, which is also when it publishes to users.
+on:
+ pull_request:
+  paths-ignore:
+   - "**/*.md"
+   - ".vscode/**"
+
+jobs:
+ Build:
+  uses: ./.github/workflows/build.yml
