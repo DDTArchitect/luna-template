@@ -25,7 +25,7 @@ Everything from Song Downloader still works: quality selection, RealMAX lookup, 
 Add this store URL in **Luna Settings → Plugin Store**:
 
 ```
-https://github.com/DDTArchitect/luna-template/releases/download/latest/store.json
+https://github.com/DDTArchitect/queued-downloader/releases/download/latest/store.json
 ```
 
 Then install **Queued Downloader** from it.
@@ -35,8 +35,8 @@ Then install **Queued Downloader** from it.
 ## Developing
 
 ```sh
-git clone https://github.com/DDTArchitect/luna-template
-cd luna-template
+git clone https://github.com/DDTArchitect/queued-downloader
+cd queued-downloader
 pnpm install
 pnpm run watch
 ```
