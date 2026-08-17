@@ -2,6 +2,10 @@ name: "[master] Release"
 
 on:
  push:
+  # Without this, every branch push republishes the `latest` release, so a
+  # work-in-progress branch would overwrite what users download
+  branches:
+   - master
   paths-ignore:
    - "**/*.md"
    - ".vscode/**"
