@@ -16,10 +16,11 @@ jobs:
      with:
       version: latest
 
+   # No `cache: pnpm` here — it needs a committed pnpm-lock.yaml and .gitignore excludes it,
+   # so setup-node fails with "Dependencies lock file is not found" before install ever runs
    - name: Install Node.js 📥
      uses: actions/setup-node@v4
      with:
-      cache: pnpm
       node-version: latest
 
    - name: Install dependencies 📥
