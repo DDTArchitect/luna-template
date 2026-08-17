@@ -1,83 +1,52 @@
-# Luna Plugins
+# Queued Downloader
 
-This is a template & example of how to develop **[Tidal Luna](https://github.com/Inrixia/TidaLuna)** plugins.
+A [TidaLuna](https://github.com/Inrixia/TidaLuna) plugin for downloading Tidal tracks as FLAC — like Inrixia's [Song Downloader](https://github.com/Inrixia/luna-plugins#SongDownloader), but with a real download queue behind it.
 
-## Getting Started
+## Why
 
-Follow these steps to create your own Luna plugin using this template:
+In Song Downloader, picking **Download** on a second album while the first is still running cancels the first and drops the second. Nothing finishes. That falls out of the plugin sharing one context menu button and one `downloadState` flag between every media item — clicking again takes the "stop the current download" branch.
 
-### 1. Clone the Repository
+Queued Downloader keeps one job per collection and drains them in order, so a second click queues instead of cancelling.
 
-```sh
-git clone https://github.com/Inrixia/luna-template.git luna-plugins
-cd luna-plugins
+The underlying transfers were never parallel anyway: TidaLuna's native download layer already serialises them behind a `Semaphore(1)`. What was missing was the ordering on top.
+
+## What you get
+
+- **Right click → Download** an album, playlist, or track selection. Click again on something else and it queues behind the first.
+- **A floating status pill** showing the active job, the current track, bytes and percent. When jobs are waiting it grows a `N jobs ▾` chip — expand it to see exactly what is queued and drop any single one with its own ✕.
+- **A queue panel in settings** with live status per job, plus history of what completed, failed, or was cancelled.
+- **Cancel** from the context menu (everything) or per job from the pill and settings. The track currently transferring finishes — TidaLuna streams straight to disk, so there is no mid-file abort — then the queue stops.
+- **Failed tracks are counted and reported** rather than silently skipped.
+
+Everything from Song Downloader still works: quality selection, RealMAX lookup, default save folder, and the `{artist}/{album}/{title}` path format.
+
+## Installing
+
+Add this store URL in **Luna Settings → Plugin Store**:
+
+```
+https://github.com/DDTArchitect/luna-template/releases/download/latest/store.json
 ```
 
-### 2. Install Node.js (if missing)
+Then install **Queued Downloader** from it.
 
-If you don't have Node.js installed, use [nvm](https://github.com/nvm-sh/nvm):
+> If you already have Inrixia's Song Downloader installed, disable one of them. Both add a Download entry to the context menu, and running both means two buttons and two independent queues.
 
-```sh
-nvm install node
-nvm use node
-```
-
-> This will install and use the latest Node.js version.
-
-### 3. Enable pnpm via Corepack
-
-[Corepack](https://nodejs.org/api/corepack.html) is included with Node.js 16.10+.
+## Developing
 
 ```sh
-corepack enable
-corepack prepare pnpm@latest --activate
-```
-
-### 4. Install Dependencies
-
-```sh
+git clone https://github.com/DDTArchitect/luna-template
+cd luna-template
 pnpm install
+pnpm run watch
 ```
 
-### 5. Start Developing
+A **DEV** store appears under **Plugin Store** in Luna Settings while `watch` is running. Enable live reload on the plugin (the antenna icon in the Plugins tab) to pick up rebuilds automatically — Luna resets that toggle every time the client starts.
 
-- Edit files in the `plugins/Example` directory to build your plugin.
-- Use `pnpm run watch` to build and serve with hot reload.
+## Credit & licence
 
-> While developing, you can install and test your plugin via the _DEV_ store that should appear under **Plugin Store** in **Luna Settings**  
-> ![image](https://github.com/user-attachments/assets/c159bf00-6feb-41c8-8884-3d9e63070c19)
+This started as a fork of **Song Downloader** by [Inrixia](https://github.com/Inrixia), from [Inrixia/luna-plugins](https://github.com/Inrixia/luna-plugins). The downloading, tagging, filename formatting, and settings are theirs; the queue, status pill, and cancellation model are the changes here.
 
-### 6. Update the README
+The bulk-download stop behaviour this replaces came from [luna-plugins#240](https://github.com/Inrixia/luna-plugins/pull/240) by np3ir. That capability is preserved — it just lives on its own context menu entry instead of overloading the Download button, so cancelling no longer means losing the album you were trying to queue.
 
-Replace this README with information about your plugin:
-
-- What it does
-- How to use it
-- Any configuration or setup steps
-
-### 7. GitHub Actions: Workflow Permissions
-
-If you want to use the included GitHub Action in (`.github`) to automatically create releases, you must set your repository workflow permissions to **Read and write permissions**:
-
-1. Go to your repository's settings: `Settings > Actions > General` https://github.com/.../.../settings/actions
-1. Under **Workflow permissions**, select **Read and write permissions**.
-1. Click **Save**.
-
-This allows the GitHub Action to create releases on your behalf.
-
-### 8. Install your plugins from GitHub
-
-After your action has build the plugins, you can install from the releases page.
-For example for **@luna/example**  
-https://github.com/.../.../releases/download/latest/luna.example
-
-Or install the store with
-https://github.com/.../.../releases/download/latest/store.json
-
-### 9. PR [TidaLuna](https://github.com/Inrixia/TidaLuna) to add your store
-
-You can open a PR to add your store url to the default stores in client if youd like <3
-
----
-
-For more details, see the [Tidal Luna documentation](https://github.com/Inrixia/TidaLuna).
+Licensed under **AGPL-3.0**, the same as the original.

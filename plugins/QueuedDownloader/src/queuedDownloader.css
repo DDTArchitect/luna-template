@@ -1,0 +1,134 @@
+.queued-downloader-pill {
+	position: fixed;
+	right: 24px;
+	bottom: 110px;
+	z-index: 10000;
+
+	display: none;
+	flex-direction: column;
+
+	width: 380px;
+	max-width: calc(100vw - 48px);
+	border-radius: 10px;
+	overflow: hidden;
+
+	background-color: rgba(20, 20, 24, 0.92);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.45);
+	font-size: 12px;
+	color: #fff;
+}
+
+.queued-downloader-pill.visible {
+	display: flex;
+}
+
+.queued-downloader-pill-row {
+	position: relative;
+	z-index: 0;
+
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 10px 12px;
+}
+
+/* Progress fill sits behind the active row only, so expanding the queue
+   doesn't stretch a 5% sliver down the whole widget */
+.queued-downloader-pill-row::before {
+	content: "";
+	position: absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	width: var(--progress, 0%);
+	background-color: #9e46ff;
+	opacity: 0.35;
+	z-index: -1;
+	transition: width 0.2s ease-out;
+}
+
+.queued-downloader-pill-text {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+
+.queued-downloader-pill-title {
+	font-weight: 600;
+}
+
+.queued-downloader-pill-title,
+.queued-downloader-pill-detail {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.queued-downloader-pill-detail {
+	opacity: 0.75;
+}
+
+.queued-downloader-pill-expand {
+	flex-shrink: 0;
+	margin-left: auto;
+	padding: 3px 8px;
+	border: none;
+	border-radius: 10px;
+	background-color: rgba(255, 255, 255, 0.12);
+	color: #fff;
+	font-size: 11px;
+	white-space: nowrap;
+	cursor: pointer;
+}
+
+.queued-downloader-pill-expand:hover {
+	background-color: rgba(255, 255, 255, 0.24);
+}
+
+.queued-downloader-pill-list {
+	display: none;
+	margin: 0;
+	padding: 4px 12px 10px;
+	max-height: 180px;
+	overflow-y: auto;
+	list-style: none;
+	border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.queued-downloader-pill.expanded .queued-downloader-pill-list {
+	display: block;
+}
+
+.queued-downloader-pill-list li {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 4px 0;
+}
+
+.queued-downloader-pill-list-name {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	opacity: 0.85;
+}
+
+.queued-downloader-pill-cancel {
+	flex-shrink: 0;
+	margin-left: auto;
+	width: 22px;
+	height: 22px;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background-color: rgba(255, 255, 255, 0.12);
+	color: #fff;
+	cursor: pointer;
+	line-height: 22px;
+}
+
+.queued-downloader-pill-cancel:hover {
+	background-color: rgba(255, 255, 255, 0.24);
+}

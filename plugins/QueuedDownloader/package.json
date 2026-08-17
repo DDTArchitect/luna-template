@@ -1,0 +1,15 @@
+{
+	"name": "Queued Downloader",
+	"description": "Download Tidal songs as FLAC files, one job at a time, with a queue you can see and reorder out of.",
+	"homepage": "https://github.com/DDTArchitect/luna-template#readme",
+	"author": {
+		"name": "DDTArchitect",
+		"url": "https://github.com/DDTArchitect",
+		"avatarUrl": "https://github.com/DDTArchitect.png"
+	},
+	"main": "./src/index.ts",
+	"type": "module",
+	"dependencies": {
+		"sanitize-filename": "^1.6.3"
+	}
+}
