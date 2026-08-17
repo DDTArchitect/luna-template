@@ -1,2 +1,8 @@
 packages:
  - "plugins/*"
+
+# pnpm 11 fails the install outright rather than silently skipping unapproved
+# postinstall scripts, and esbuild needs its postinstall to fetch its platform
+# binary. Same fix luna-plugins landed in Inrixia/luna-plugins#236.
+allowBuilds:
+ esbuild: true
