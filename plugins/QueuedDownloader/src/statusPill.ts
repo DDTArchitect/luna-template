@@ -25,10 +25,15 @@ export const initStatusPill = () => {
 	detail.className = "queued-downloader-pill-detail";
 	text.append(title, detail);
 
+	// The queue list is the part worth looking at, so it starts open and the
+	// chip collapses it. Tracked as state rather than read back off the class,
+	// because render() clears the class whenever the queue empties.
+	let collapsed = false;
+
 	const expand = document.createElement("button");
 	expand.className = "queued-downloader-pill-expand";
 	expand.onclick = () => {
-		pill.classList.toggle("expanded");
+		collapsed = !collapsed;
 		render();
 	};
 
@@ -101,8 +106,8 @@ export const initStatusPill = () => {
 		detail.innerText = parts.join(" · ");
 
 		const queued = DownloadQueue.pendingCount - 1;
-		if (queued === 0) pill.classList.remove("expanded");
-		const expanded = pill.classList.contains("expanded");
+		const expanded = queued > 0 && !collapsed;
+		pill.classList.toggle("expanded", expanded);
 		expand.hidden = queued === 0;
 		// "jobs", not a bare count — the line around it is all track-level numbers
 		expand.innerText = `${queued} job${queued === 1 ? "" : "s"} ${expanded ? "▴" : "▾"}`;

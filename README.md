@@ -13,7 +13,7 @@ The underlying transfers were never parallel anyway: TidaLuna's native download 
 ## What you get
 
 - **Right click → Download** an album, playlist, or track selection. Click again on something else and it queues behind the first.
-- **A floating status pill** showing the active job, the current track, bytes and percent. When jobs are waiting it grows a `N jobs ▾` chip — expand it to see exactly what is queued and drop any single one with its own ✕.
+- **A floating status pill** showing the active job, the current track, bytes and percent. When jobs are waiting it lists them underneath — what is queued, in order, each droppable with its own ✕. The `N jobs` chip collapses the list if you would rather just see the active download.
 - **A queue panel in settings** with live status per job, plus history of what completed, failed, or was cancelled.
 - **Cancel** from the context menu (everything) or per job from the pill and settings. The track currently transferring finishes — TidaLuna streams straight to disk, so there is no mid-file abort — then the queue stops.
 - **Failed tracks are counted and reported** rather than silently skipped.
