@@ -54,12 +54,22 @@ export const initStatusPill = () => {
 
 	// Rebuilding the rows on every progress tick would throw away clicks mid-press,
 	// so only redraw when the set of queued jobs actually changes
-	let renderedIds = "";
+	let renderedIds: string | undefined;
 	const renderList = () => {
 		const queued = DownloadQueue.getJobs().filter((job) => job.status === "queued");
 		const ids = queued.map((job) => job.id).join(",");
 		if (ids === renderedIds) return;
 		renderedIds = ids;
+
+		if (queued.length === 0) {
+			// Keep the list open with a placeholder rather than collapsing the pill
+			// out from under whoever is watching it drain
+			const empty = document.createElement("li");
+			empty.className = "queued-downloader-pill-list-empty";
+			empty.innerText = "Nothing else queued";
+			list.replaceChildren(empty);
+			return;
+		}
 
 		list.replaceChildren(
 			...queued.map((job) => {
@@ -106,11 +116,12 @@ export const initStatusPill = () => {
 		detail.innerText = parts.join(" · ");
 
 		const queued = DownloadQueue.pendingCount - 1;
-		const expanded = queued > 0 && !collapsed;
+		const expanded = !collapsed;
 		pill.classList.toggle("expanded", expanded);
-		expand.hidden = queued === 0;
+		// Deliberately not hidden when the queue empties — the pill changing size on
+		// its own as the last album starts is jarring to watch
 		// "jobs", not a bare count — the line around it is all track-level numbers
-		expand.innerText = `${queued} job${queued === 1 ? "" : "s"} ${expanded ? "▴" : "▾"}`;
+		expand.innerText = `${queued === 0 ? "No queue" : `${queued} job${queued === 1 ? "" : "s"}`} ${expanded ? "▴" : "▾"}`;
 		expand.title = expanded ? "Hide the queue" : "Show what else is queued";
 		renderList();
 
