@@ -132,3 +132,9 @@
 .queued-downloader-pill-cancel:hover {
 	background-color: rgba(255, 255, 255, 0.24);
 }
+
+.queued-downloader-pill-list-empty {
+	padding: 4px 0;
+	opacity: 0.45;
+	font-style: italic;
+}
